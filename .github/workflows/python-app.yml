@@ -31,8 +31,8 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Run all tests
       run: |
-      make test
-      make clean
+        make test
+        make clean
     - name: Test with pytest
       run: |
         pytest
