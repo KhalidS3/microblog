@@ -32,5 +32,5 @@ jobs:
           context: .
           file: ./docker/Dockerfile_prod
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/microblog:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/microblog:${{  github.ref_name }}-prod # ${{ secrets.DOCKER_USERNAME }}/microblog:latest
           labels: ${{ steps.meta.outputs.labels }}
