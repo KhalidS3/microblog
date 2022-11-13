@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["Python application"]
     types:
-     - completed
+      - completed
 
 jobs:
 
@@ -22,7 +22,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extract metadata for docker
-        uses: docker/metadata-actions@v3
+        uses: actions/checkout@v2
       - name: publish docker image
         uses: docker/build-push-actions@v3
         with:
