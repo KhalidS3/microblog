@@ -1,0 +1,36 @@
+version: "3"
+services:
+  prod:
+    image: khsa16/microblog:1.0.0-prod
+    container_name: "microblog-prod"
+    links:
+      - databaseserver:mysql
+    ports:
+        - "8000:5000"
+    restart: "always"
+    environment:
+      MYSQL_DATABASE: microblog
+      SECRET_KEY: kabuljan1
+  databaseserver:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_USER: microblog
+      MYSQL_DATABASE: microblog
+      MYSQL_PASSWORD: kabuljan1
+      DATABASE_URL: mysql+pymysql://microblog:kabuljan1@mysql/microblog
+    volumes:
+       - mysqlD:/var/lib/mysql
+    restart:
+      "unless-stopped"
+  test:
+    image: khsa16/microblog:1.0.0-test
+    container_name: microblog-test
+    volumes:
+      - ./app:/home/microblog/app
+      - ./tests:/home/microblog/tests
+    restart:
+      "unless-stopped"
+volumes:
+  mysqlD:

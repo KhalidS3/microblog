@@ -108,3 +108,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# my own command lines
+command_line.txt
