@@ -22,10 +22,15 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extract metadata for docker
+        id: meta
         uses: actions/checkout@v2
+        with:
+          images: ${{ secrets.DOCKER_USERNAME }}/microblog
       - name: publish docker image
         uses: docker/build-push-action@v3
         with:
+          context: .
           file: ./docker/Dockerfile_prod
-          tags: ${{ secrets.DOCKER_USERNAME }}/microblog:latest
           push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
