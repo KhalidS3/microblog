@@ -3,8 +3,8 @@ name: Docker configuration
 on:
   workflow_run:
     workflows: ["Python application"]
-    check_suite:
-      types: [completed]
+    types:
+     - completed
 
 jobs:
 
@@ -26,8 +26,6 @@ jobs:
       - name: publish docker image
         uses: docker/build-push-actions@v3
         with:
-          context: .
           file: ./docker/Dockerfile_prod
-          push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/microblog:latest
-          lables: ${{ steps.meta.outputs.lables }}
+          push: true
