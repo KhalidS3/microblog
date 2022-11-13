@@ -23,11 +23,11 @@ jobs:
 
       - name: Extract metadata for docker
         uses: docker/metadata-actions@v3
-      - name: publish
+      - name: publish docker image
         uses: docker/build-push-actions@v3
         with:
           context: .
-          push: true
           file: ./docker/Dockerfile_prod
+          push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/microblog:latest
           lables: ${{ steps.meta.outputs.lables }}
