@@ -7,8 +7,6 @@ on:
       - completed
 
 jobs:
-  run:
-    uses: ./.github/workflows/python-app.yml
 
   build:
     name: Building docker container
