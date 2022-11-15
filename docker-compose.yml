@@ -1,7 +1,7 @@
 version: "3"
 services:
   prod:
-    image: khsa16/microblog:1.0.0-prod
+    image: khsa16/microblog:master-prod
     container_name: "microblog-prod"
     links:
       - databaseserver:mysql
