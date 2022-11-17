@@ -1,0 +1,12 @@
+---
+root_password: $6$pl.PT3.vrd13$J4ez7Nu5MZKq6u4HtlO4cCCqK5M2gFuFkeFanKVXb0Eq5x2rQa7cjnH/aJB5qfs2t.Ildw4nCcH.1smP6IRu2/
+
+server_user: deploy
+server_user_password: $6$cjIdMRBZ$5Q6c1D/AII.JqDHiYppKhjRaeSUzEBpP6tZA8hYwAFQzqnU8SD9coQgk3F3VDecaczD3CRbCKt4C/rBpQLhvq0
+server_user_groups:
+    -   sudo
+
+pub_ssh_key_location:
+    -   ~/.ssh/azure.pub
+
+
