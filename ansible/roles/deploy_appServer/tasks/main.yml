@@ -1,0 +1,23 @@
+---
+-   name: Update apt-cache and upgrade
+    apt:
+        force_apt_get: yes
+        update_cache: "True"
+        cache_valid_time: 3600
+        upgrade: yes
+# -   name: Logging into docker_hub
+#     docker_login:
+#       username: "{{ docker_user_name }}"
+#       password: "{{ docker_password }}"
+
+-   name: Starting up the microblog container
+    docker_container:
+        name: microblog-prod
+        image: khsa16/microblog:master-prod
+        state: started
+        # container_default_behaviour: "compatibility"
+        restart_policy: always
+        ports:
+          - "8000:5000"
+        env:
+          DATABASE_URL: "mysql+pymysql://microblog:{{ mysql_root_pass }}@{{ groups['database'][0] }}:3306/microblog"

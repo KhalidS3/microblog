@@ -1,0 +1,19 @@
+---
+packages:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg
+    - software-properties-common
+    - python3-pip
+    - virtualenv
+    - python3-setuptools
+
+python_pip_docker_packages:
+    - docker
+
+docker_packages:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-compose-plugin
