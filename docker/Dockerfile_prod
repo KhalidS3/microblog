@@ -6,6 +6,7 @@ WORKDIR /home/microblog
 # Copy requiered files to the home directory microblog
 COPY requirements.txt microblog.py boot_prod.sh ./
 COPY requirements requirements
+COPY gunicorn_config.py gunicorn_config.py
 
 RUN  <<-EOF
     python -m venv .venv
@@ -24,6 +25,8 @@ RUN <<-EOF
 EOF
 
 USER microblog
+
+ENV prometheus_multiproc_dir /tmp
 
 EXPOSE 5000
 ENTRYPOINT ["./boot_prod.sh"]

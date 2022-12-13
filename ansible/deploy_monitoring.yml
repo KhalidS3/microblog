@@ -1,8 +1,9 @@
 ---
--   hosts: appServer
+-   hosts: monitoring
     remote_user: "{{ server_user}}"
     become: yes
     become_method: sudo
     roles:
       - docker_install
-      - deploy_appServer
+      - node-exporter
+      - prometheus

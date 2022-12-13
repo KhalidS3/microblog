@@ -33,5 +33,5 @@
       update_cache: yes
       name: "{{ docker_packages }}"
       state: latest
-    notify:
-      - Restart docker
+    # notify:
+    #   - Restart docker

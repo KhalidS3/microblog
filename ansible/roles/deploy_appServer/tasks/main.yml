@@ -12,8 +12,8 @@
 
 -   name: Starting up the microblog container
     docker_container:
-        name: microblog-prod
-        image: khsa16/microblog:master-prod
+        name: microblog-flask-exportor
+        image: khsa16/microblog:flask-exportor
         state: started
         # container_default_behaviour: "compatibility"
         restart_policy: always

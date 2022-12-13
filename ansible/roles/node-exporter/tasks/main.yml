@@ -1,0 +1,30 @@
+---
+-   name: Update apt-cache and upgrade
+    apt:
+        force_apt_get: yes
+        update_cache: "True"
+        cache_valid_time: 3600
+        upgrade: yes
+
+- name: Create monitoring network
+  docker_network:
+    name: monitor
+
+-   name: Initiating node-exporter container
+    docker_container:
+        name: node-exporter
+        image: prom/node-exporter:v1.2.2
+        state: started
+        restart: yes
+        volumes:
+            - /proc:/host/proc:ro
+            - /sys:/host/sys:ro
+            - /:/rootfs:ro
+        command:
+            - '--path.procfs=/host/proc'
+            - '--path.rootfs=/rootfs'
+            - '--path.sysfs=/host/sys'
+            - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+        ports:
+            - "9100:9100"
+        network_mode: monitor

@@ -1,36 +1,97 @@
 version: "3"
-services:
-  prod:
-    image: khsa16/microblog:master-prod
-    container_name: "microblog-prod"
-    links:
-      - databaseserver:mysql
-    ports:
-        - "8000:5000"
-    restart: "always"
-    environment:
-      MYSQL_DATABASE: microblog
-      SECRET_KEY: kabuljan1
-  databaseserver:
-    image: mysql:5.7
-    container_name: mysql
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_USER: microblog
-      MYSQL_DATABASE: microblog
-      MYSQL_PASSWORD: kabuljan1
-      DATABASE_URL: mysql+pymysql://microblog:kabuljan1@mysql/microblog
-    volumes:
-       - mysqlD:/var/lib/mysql
-    restart:
-      "unless-stopped"
-  test:
-    image: khsa16/microblog:1.0.0-test
-    container_name: microblog-test
-    volumes:
-      - ./app:/home/microblog/app
-      - ./tests:/home/microblog/tests
-    restart:
-      "unless-stopped"
+
+networks:
+    monitor:
+
 volumes:
   mysqlD:
+  prometheus-data: {}
+  grafana-data: {}
+
+services:
+    databaseserver:
+      image: mysql:5.7
+      container_name: mysql
+      environment:
+        MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+        MYSQL_USER: microblog
+        MYSQL_DATABASE: microblog
+        MYSQL_PASSWORD: kabuljan1
+        DATABASE_URL: mysql+pymysql://microblog:kabuljan1@mysql/microblog
+      volumes:
+        - mysqlD:/var/lib/mysql
+      restart:
+        "unless-stopped"
+
+    prod:
+    #   image: khsa16/microblog:master-prod
+      build:
+        context: .
+        dockerfile: docker/Dockerfile_prod
+      container_name: "microblog_prod_flask"
+      links:
+        - databaseserver:mysql
+      ports:
+          - "8000:5000"
+      restart: "always"
+      environment:
+        MYSQL_DATABASE: microblog
+        SECRET_KEY: kabuljan1
+
+    # test:
+    #   image: khsa16/microblog:1.0.0-test
+    #   container_name: microblog-test
+    #   volumes:
+    #     - ./app:/home/microblog/app
+    #     - ./tests:/home/microblog/tests
+    #   restart:
+    #     "unless-stopped"
+
+    # node-exporter:
+    #     image: prom/node-exporter:v1.2.2
+    #     container_name: node-exporter
+    #     restart: unless-stopped
+    #     volumes:
+    #         - /proc:/host/proc:ro
+    #         - /sys:/host/sys:ro
+    #         - /:/rootfs:ro
+    #     command:
+    #         - '--path.procfs=/host/proc'
+    #         - '--path.rootfs=/rootfs'
+    #         - '--path.sysfs=/host/sys'
+    #         - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    #     ports:
+    #         - "9100:9100"
+    #     networks:
+    #         - monitor
+
+    # prometheus:
+    #     image: prom/prometheus:v2.31.1
+    #     container_name: prometheus
+    #     restart: unless-stopped
+    #     volumes:
+    #         - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    #         - prometheus-data:/prometheus
+    #     command:
+    #         - "--config.file=/etc/prometheus/prometheus.yml"
+    #         - "--storage.tsdb.path=/prometheus"
+    #         - "--web.console.libraries=/etc/prometheus/console_libraries"
+    #         - "--web.console.templates=/etc/prometheus/consoles"
+    #         - "--storage.tsdb.retention.time=24h"
+    #         - "--web.enable-lifecycle"
+    #     networks:
+    #         - monitor
+    #     ports:
+    #         - "9090:9090"
+
+    # grafana:
+    #     image: grafana/grafana:8.2.4
+    #     container_name: grafana
+    #     restart: unless-stopped
+    #     volumes:
+    #         - grafana-data:/var/lib/grafana
+    #     networks:
+    #         - monitor
+    #     ports:
+    #        - "3000:3000"
+
