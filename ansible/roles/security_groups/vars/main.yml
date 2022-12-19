@@ -23,6 +23,13 @@ sg_groups:
             priority: 1003
             direction: Inbound
             source_address_prefix: '0.0.0.0/0'
+        -   name: nginx
+            protocol: Any
+            destination_port_range: 9113
+            access: Allow
+            priority: 1004
+            direction: Inbound
+            source_address_prefix: Any
     -   name: appServer
         port_rules:
         -   name: APP
@@ -85,10 +92,10 @@ sg_groups:
             priority: 1004
             direction: Inbound
             source_address_prefix: '0.0.0.0/0'
-        # -   name: node # uncomment to open port for node-exporter
-        #     protocol: Any
-        #     destination_port_range: 9100
-        #     access: Allow
-        #     priority: 1005
-        #     direction: Inbound
-        #     source_address_prefix: Any
+        -   name: node # uncomment to open port for node-exporter
+            protocol: Any
+            destination_port_range: 9100
+            access: Allow
+            priority: 1005
+            direction: Inbound
+            source_address_prefix: Any

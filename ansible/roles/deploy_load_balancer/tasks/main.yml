@@ -53,4 +53,19 @@
       path: /etc/nginx/sites-enabled/load-balancer.conf
       state: link
 
+-   name: restart nginx
+    service: name=nginx state=restarted enabled=yes
 
+-   name: Initiating nginx prometheus exporter container
+    docker_container:
+        name: nginx-prometheus
+        image: nginx/nginx-prometheus-exporter:0.4.2
+        ports:
+            - "9113:9113"
+        restart_policy: unless-stopped
+        state: started
+        command:
+            -nginx.scrape-uri=https://{{ domain_name }}/metrics
+            -nginx.retries=10
+            -nginx.ssl-verify=false
+            -web.telemetry-path=/prometheus

@@ -1,0 +1,33 @@
+---
+-   name: Update apt-cache and upgrade
+    apt:
+        force_apt_get: yes
+        update_cache: "True"
+        cache_valid_time: 3600
+        upgrade: yes
+
+- name: Create monitoring network
+  docker_network:
+    name: monitor
+
+-   name: Initiating docker volumes for grafana
+    docker_volume:
+      volume_name: grafana-data
+
+-   name : Template grafana config to server
+    template:
+        src: templates/grafana.ini.j2
+        dest: /tmp/grafana.ini
+        force: yes
+
+-   name : Initiating grafana container
+    docker_container:
+      name: grafana
+      image: grafana/grafana:8.2.4
+      restart_policy: unless-stopped
+      volumes:
+        - grafana-data:/var/lib/grafana
+        - /tmp/grafana.ini:/etc/grafana/grafana.ini
+      network_mode: monitor
+      ports:
+        - "3000:3000"
